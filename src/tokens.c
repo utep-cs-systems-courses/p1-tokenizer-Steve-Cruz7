@@ -1,4 +1,4 @@
-#inlcude "stdio.h"
+#include "stdio.h"
 #include "tokenizer.h"
 
 int space_char(char c){
@@ -8,7 +8,7 @@ int space_char(char c){
     return 0;
 }
 
-int not_space_char(char c){
+int non_space_char(char c){
   if(c == '\0')
     return 0;
   else
@@ -26,16 +26,20 @@ char *token_start(char *s){
 }
 
 char *token_terminator(char *token){
-  while(*token != '\0')
+  while(non_space_char(*token)){
     token++;
+  }
+  token -= 1;
+  printf("Printing last letter of token, %c", *token);
   return token;
 }
 
 int count_tokens(char *str){
   int count = 0;
   str = token_start(str);
+  count ++;
   while(*str != '\0'){
-    if(not_space_char(*str)){
+    if(non_space_char(*str)){
 	str++;
    }else{
         count++;
@@ -45,11 +49,12 @@ int count_tokens(char *str){
   return count;
 }
 
-char *copy_str(char *inStr, int len){
-  char *p;
-  while(*s != '\0'){
-    *p = *s;
-    s++;
+char *copy_str(char *inStr, short len){
+  char word[len+1];
+  char *p = word;
+  while(*inStr != '\0'){
+    *p = *inStr;
+    inStr++;
     p++;
   }
   *p = '\0';
