@@ -9,7 +9,7 @@ int main(){
   while(1){
     putchar('>');
     fgets(input, MAX, stdin);
-    printf("%s", input);
-    
+    char **tokens = tokenize(input);
+    print_tokens(tokens);
   }
 }

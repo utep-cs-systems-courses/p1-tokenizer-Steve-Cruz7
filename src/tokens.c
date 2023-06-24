@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include "stdlib.h"
 #include "tokenizer.h"
 
 int space_char(char c){
@@ -29,8 +30,6 @@ char *token_terminator(char *token){
   while(non_space_char(*token)){
     token++;
   }
-  token -= 1;
-  printf("Printing last letter of token, %c", *token);
   return token;
 }
 
@@ -50,17 +49,47 @@ int count_tokens(char *str){
 }
 
 char *copy_str(char *inStr, short len){
-  char word[len+1];
+  char *word = malloc(sizeof(char) * len);
   char *p = word;
-  while(*inStr != '\0'){
+  int count = 0;
+  while(count != len){
     *p = *inStr;
     inStr++;
     p++;
+    count++;
   }
   *p = '\0';
-  p -= len;
+  p -= len;  
   return p;
 }
+
+char **tokenize(char *str){ //Going to make use of malloc here to be able to pass around the tokens
+  int size = count_tokens(str) + 1;
+  char **tokens = malloc(sizeof(char*) * size);
+  int i = 0;
+  int len = count_tokens(str);
+  while(i < len){
+    str = token_start(str);
+    tokens[i] = copy_str(str, token_terminator(str) - str);
+    str = token_terminator(str);
+    i++;
+  }
+  tokens[i] = "\0";
+  return tokens;
+  
+}
+
+void print_tokens(char **tokens){
+  int i = 0;
+  while(*tokens[i] != '\0'){
+    printf("%s\n", tokens[i]);
+    i++;
+  }
+  
+}
+
+
+
       
       
  
