@@ -1,6 +1,7 @@
 /*This is going to be the User Interface that just echoes input for now*/
 #include <stdio.h>
 #include "tokenizer.h"
+#include "history.h"
 #define MAX 100
 
 int main(){
@@ -11,5 +12,6 @@ int main(){
     fgets(input, MAX, stdin);
     char **tokens = tokenize(input);
     print_tokens(tokens);
+    free_tokens(tokens);
   }
 }

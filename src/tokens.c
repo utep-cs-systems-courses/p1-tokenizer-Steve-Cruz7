@@ -88,6 +88,15 @@ void print_tokens(char **tokens){
   
 }
 
+void free_tokens(char **tokens){
+  int i = 0;
+  while(*tokens[i] != '\0'){
+    free(tokens[i]);
+    i++;
+  }
+  free(tokens);
+}
+
 
 
       
