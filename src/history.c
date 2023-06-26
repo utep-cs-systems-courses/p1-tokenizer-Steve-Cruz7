@@ -1,65 +1,74 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "history.h"
+#include "tokenizer.h"
 
 List *init_history(){
   Item root;             //Creating the root of the linked list and giving it ID 0
   root.id = 0;
-  Item *pointer = malloc(sizeof(struct Item));
+  root.str = "Start of Linked List\n";
+  Item *pointer = malloc(sizeof(struct s_Item));
   *pointer = root;        //Creating a pointer to the root
   List list;
   list.root = pointer; //Initializing list by giving it the pointer to the root
-  List *linkedlist = malloc(sizeof(struct List));
+  List *linkedlist = malloc(sizeof(struct s_List));
   *linkedlist = list;
   return linkedlist;
 }
 
 void add_history(List *list, char *str){
-  List *copy = list;
-  if(copy->root->id == 0){
-    copy->root->str = str;
+  Item *copy = list->root;
+  Item node;
+  int id;
+  while(copy->next != NULL){
+    copy = copy->next;
   }
-  else{
-    Item node;
-    int id;
-    while(copy->root->next != NULL){
-      id = copy->root->id;
-      copy->root = copy->root->next;
-    }
-    node.id = id +1;
-    node.str = str;
-    copy->root->next = malloc(sizeof(struct Item));
-    *(copy->root->next) = node;
+  node.id = copy->id +1;
+  //segment for counting length of string
+  int i = 0;
+  while(*str != '\0'){
+    i++;
+    str++;
   }
+  str -= i;
+  //segment for counting length of string
+  node.str = copy_str(str, i);
+  copy->next = malloc(sizeof(struct s_Item));
+  *(copy->next) = node;
+  // printf("Successfully created ID Number %d for string %s", node.id, node.str);
 }
 
+
 char *get_history(List *list, int id){
-  List *copy = list;
-  while(copy->root->id != id){
-    if(copy->root->next != NULL){
-      copy->root = copy->root->next;
+  //puts("Entering get_history");
+  Item *copy = list->root;
+  while(copy->id != id){
+    if(copy->next != NULL){
+      copy = copy->next;
     }
     else {
       return "Not a valid ID";
     }
   }
-  return copy->root->str;
+  return copy->str;
 }
 
 void print_history(List *list){
-  List *copy = list;
-  while(copy->root->next != NULL){
-    printf("%s\n", copy->root->str);
-    copy->root = copy->root->next;
+  Item *copy = list->root;
+  copy = copy->next;
+  puts("Entering print_history");
+  while(copy->next != NULL){
+    printf("ID %d: %s", copy->id, copy->str);
+    copy = copy->next;
   }
+  printf("ID %d: %s", copy->id, copy->str);
 }
 
 void free_history(List *list){
-  List *copy = list;
-  while(copy->root->next != NULL){
-   Item *next = copy->root->next;
-   free(copy->root);
-   copy->root = next;
+  while(list->root->next != NULL){
+   Item *next = list->root->next;
+   free(list->root);
+   list->root = next;
   }
   free(list);
 }
