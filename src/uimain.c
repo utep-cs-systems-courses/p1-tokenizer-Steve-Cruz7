@@ -36,27 +36,27 @@ int main(){
       }
     } //End of first split in decision
     
-    else if(*tokens[0] == '2'){
+    else if(**tokens == '2'){
       puts("Type h to print out the history of your inputs, a number to attempt to retrieve that input history by ID, or c to go back to the first menu");
       free_tokens(tokens);
       while(1){
 	putchar('>');
 	fgets(input, MAX, stdin);
 	tokens = tokenize(input);
-	if(*tokens[0] == 'h'){
+	if(**tokens == 'h'){
 	  print_history(list);
 	}
-	else if(*tokens[0] == 'c'){
+	else if(**tokens == 'c'){
 	  puts("Returning to main menus");
 	  break;
 	}
-	else if((*tokens[0] - '0') > 0){
-	  printf("%s", get_history(list, *tokens[0] - '0'));
+	else if((**tokens - '0') > 0){
+	  printf("%s", get_history(list, **tokens - '0'));
 	}
 	 
       }
     } //End of second split in decision
-    else if(*tokens[0] == 'c'){
+    else if(**tokens == 'c'){
       free_history(list);
       return 0;
     }

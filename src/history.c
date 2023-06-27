@@ -56,12 +56,16 @@ char *get_history(List *list, int id){
 void print_history(List *list){
   Item *copy = list->root;
   copy = copy->next;
-  puts("Entering print_history");
-  while(copy->next != NULL){
-    printf("ID %d: %s", copy->id, copy->str);
-    copy = copy->next;
+  if(copy == NULL){
+    puts("There is nothing in the history");
   }
-  printf("ID %d: %s", copy->id, copy->str);
+  else{
+    while(copy->next != NULL){
+      printf("ID %d: %s", copy->id, copy->str);
+      copy = copy->next;
+    }
+    printf("ID %d: %s", copy->id, copy->str);
+  }
 }
 
 void free_history(List *list){
