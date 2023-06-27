@@ -64,7 +64,7 @@ char *copy_str(char *inStr, short len){
 }
 
 char **tokenize(char *str){ //Going to make use of malloc here to be able to pass around the tokens
-  int size = count_tokens(str) + 1;
+  /* int size = count_tokens(str) + 1;
   char **tokens = malloc(sizeof(char*) * size);
   int i = 0;
   int len = count_tokens(str);
@@ -76,24 +76,42 @@ char **tokenize(char *str){ //Going to make use of malloc here to be able to pas
   }
   tokens[i] = "\0";
   return tokens;
-  
+  This version used the array notation, not pointer arithmeitc
+  */
+
+  int size = count_tokens(str) +1;
+  char ** tokens = malloc(sizeof(char*) * size);
+  int len = count_tokens(str);
+  int i = 0;
+  while(i < len){
+    str = token_start(str);
+    *tokens = copy_str(str, token_terminator(str) - str);
+    str = token_terminator(str);
+    i++;
+    tokens++;
+  }
+  *tokens = "\0";
+  tokens -= len;
+  return tokens;
 }
 
 void print_tokens(char **tokens){
-  int i = 0;
-  while(*tokens[i] != '\0'){
-    printf("%s\n", tokens[i]);
-    i++;
+  char **copy = tokens;
+  while(**copy != '\0'){
+    printf("%s\n", *copy);
+    copy++;
   }
   
 }
 
 void free_tokens(char **tokens){
   int i = 0;
-  while(*tokens[i] != '\0'){
-    free(tokens[i]);
+  while(**tokens != '\0'){
+    free(*tokens);
+    tokens++;
     i++;
   }
+  tokens -= i;
   free(tokens);
 }
 

@@ -15,8 +15,9 @@ int main(){
     putchar('>');
     fgets(input, MAX, stdin);
     char **tokens = tokenize(input);
-    if(*tokens[0] == '1'){
+    if(**tokens == '1'){
       puts("Entering free-typing mode");
+      // print_tokens(tokens);
       free_tokens(tokens);
       puts("If you want to go back to the main menu, just input c");
       while(1){
